@@ -68,16 +68,19 @@
     return out;
   };
 
-  Multi.prototype.createRoom = function () {
+  // Optional reuseCode reclaims the same room after a refresh so waiting
+  // guests can rejoin it. Falls back to a fresh code when invalid/absent.
+  Multi.prototype.createRoom = function (reuseCode) {
     const self = this;
     this.leave();
+    this.role = 'host';
+    const want = String(reuseCode || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+    this.code = want.length === 6 ? want : makeCode();
     const Peer = root.Peer;
     if (!Peer) {
       this.emit('error', 'PeerJS not loaded');
       return;
     }
-    this.role = 'host';
-    this.code = makeCode();
     this.peer = new Peer('ttm-' + this.code);
     this.peer.on('open', function () {
       self.emit('room-ready', self.code);

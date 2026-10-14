@@ -16,4 +16,8 @@ await import('./names.js');
 await import('./multi.js');
 await import('./party.js');
 await import('./roast.js');
+await import('./game-state.js');
+await import('./game-solo.js');
+await import('./game-multi.js');
+await import('./game-boot.js');
 await import('./game.js');

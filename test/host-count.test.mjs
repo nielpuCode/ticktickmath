@@ -25,7 +25,11 @@ assert.equal(readHostCount(null), 10);
 console.log('readHostCount ok');
 
 import { readFileSync } from 'node:fs';
-const js = readFileSync('js/game.js', 'utf8');
+const js = readFileSync('js/game.js', 'utf8')
+  + readFileSync('js/game-state.js', 'utf8')
+  + readFileSync('js/game-solo.js', 'utf8')
+  + readFileSync('js/game-multi.js', 'utf8')
+  + readFileSync('js/game-boot.js', 'utf8');
 assert.ok(js.includes('hostQuestionCount'), 'hostQuestionCount exists');
 assert.ok(js.includes('pendingCount'), 'pendingCount exists');
 assert.ok(js.includes('MULTI') || js.includes('multiState.pendingCount'), 'pendingCount logic');
@@ -41,7 +45,7 @@ console.log('game.js structure ok');
 import { readdirSync } from 'node:fs';
 const distHtml = readFileSync('dist/index.html', 'utf8');
 const assets = readdirSync('dist/assets');
-const jsAsset = assets.find((f) => f.endsWith('.js'));
-const distJs = jsAsset ? readFileSync('dist/assets/' + jsAsset, 'utf8') : '';
+// code-split build: stepper id can live in any chunk, scan them all
+const distJs = assets.filter((f) => f.endsWith('.js')).map((f) => readFileSync('dist/assets/' + f, 'utf8')).join('\n');
 assert.ok(distHtml.includes('q-minus') || distJs.includes('q-minus'), 'built stepper');
 console.log('dist ok: count lock + stepper present');

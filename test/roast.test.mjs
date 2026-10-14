@@ -78,9 +78,10 @@ h = roast.headline(
   [{ id: 'a', name: 'A', correct: 5, ms: 1000 }, { id: 'b', name: 'B', correct: 3, ms: 500 }], 'b');
 assert.equal(h.title, '#2 of 2', 'outscored is a loss even when faster');
 
-// wiring: game.js must call the helper (results header would crash without it)
+// wiring: game cores must call the helper (results header would crash without it)
 import { readFileSync } from 'node:fs';
-const gameSrc = readFileSync(new URL('../js/game.js', import.meta.url), 'utf8');
+const gameSrc = ['game.js', 'game-state.js', 'game-solo.js', 'game-multi.js', 'game-boot.js']
+  .map((f) => readFileSync(new URL('../js/' + f, import.meta.url), 'utf8')).join('\n');
 assert.ok(gameSrc.includes('roastApi.headline'), 'showStandings calls roast.headline');
 assert.ok(!gameSrc.includes('Tie on score'), 'old loose-tie copy gone');
 

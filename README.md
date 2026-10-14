@@ -82,12 +82,16 @@ Open **http://localhost:5173**
 │   └── results.html
 ├── css/style.css       # Tailwind v4 + theme keyframes
 ├── js/
-│   ├── main.js         # Entry - injects screens then loads game
+│   ├── main.js         # Entry - injects screens then loads game cores
 │   ├── generator.js    # Problem + distractor logic (pure)
 │   ├── names.js        # Nickname list + dedupe + device storage (pure)
 │   ├── multi.js        # PeerJS room transport + standings sort
 │   ├── party.js        # Room state: roster, ready gate, answers (pure)
-│   └── game.js         # Screens, state, solo + multiplayer flow
+│   ├── game-state.js   # Shared state + settings (lang/count/grace/hard)
+│   ├── game-solo.js    # Screens, solo flow, question render
+│   ├── game-multi.js   # Multiplayer room + race + net events
+│   ├── game-boot.js    # Event bindings + init
+│   └── game.js         # Compat loader (re-exports the four cores)
 ├── test/
 │   ├── generator.test.mjs
 │   ├── winner.test.mjs
